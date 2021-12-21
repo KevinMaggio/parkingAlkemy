@@ -6,7 +6,7 @@ class Vehicle (
     val plate :String,
     val type: VehicleType,
     val checkInTime:Calendar,
-    val test:String?=null
+    val discount:String?=null
 ){
 
     val parkingTime:Long
@@ -22,8 +22,4 @@ class Vehicle (
     }
 
     override fun hashCode(): Int = this.plate.hashCode()
-}
-
-class prueba{
-    val car = Vehicle("",VehicleType.BUS, Calendar.getInstance())
 }
