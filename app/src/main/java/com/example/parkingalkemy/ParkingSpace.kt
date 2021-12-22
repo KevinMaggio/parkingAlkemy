@@ -3,7 +3,6 @@ package com.example.parkingalkemy
 import java.util.*
 
 class ParkingSpace(var vehicle: Vehicle) {
-
     val parkingTime: Long
         get() {
             return (Calendar.getInstance().timeInMillis - vehicle.checkInTime.timeInMillis) / 60000
@@ -23,12 +22,13 @@ class ParkingSpace(var vehicle: Vehicle) {
         for (i in parking.vehiclesList) {
             if (i.plate == plate) {
 
-                if (i.discount!=null){
-                    onSuccess(calculateFee(303,i.type.type,true))
-                }else{
-                    onSuccess(calculateFee(303,i.type.type,false))
+                if (i.discount != null) {
+                    onSuccess(calculateFee(i.parkingTime, i.type.type, true))
+                } else {
+                    onSuccess(calculateFee(i.parkingTime, i.type.type, false))
                 }
 
+                parking.vehiclesList.remove(i)
                 break
             } else {
                 onError()
@@ -37,29 +37,33 @@ class ParkingSpace(var vehicle: Vehicle) {
     }
 
     private fun calculateFee(parkingTime: Long, type: Int, fee: Boolean): Int {
-        var monto=0
-        var mod =0
-        if (parkingTime<120){
+        var monto = 0
+        var mod = 0
+        if (parkingTime < 120) {
             monto = type
-        }else{
-            var extra = ((parkingTime.toInt() - 120)/ 15 )
-            if (((parkingTime.toInt() - 120)%15) !=0){
-                mod=1
+        } else {
+            var extra = ((parkingTime.toInt() - 120) / 15)
+            if (((parkingTime.toInt() - 120) % 15) != 0) {
+                mod = 1
             }
-            monto= type+((extra+mod)*5)
+            monto = type + ((extra + mod) * 5)
 
-            if (fee){
-                monto-=(monto*15)/100
+            if (fee) {
+                monto -= (monto * 15) / 100
             }
         }
         return monto
     }
 
     fun onSuccess(res: Int) {
+        parking.parkingPair = Pair(parking.parkingPair.first + 1, parking.parkingPair.second + res)
+        println("Your fee is $res . Come back soon.")
 
     }
 
     fun onError() {
-        println("error en check out")
+        println("Sorry, the check-out failed")
     }
+
+
 }

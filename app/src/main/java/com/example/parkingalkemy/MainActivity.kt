@@ -57,6 +57,7 @@ class MainActivity : AppCompatActivity() {
         minibus5
     )
 
+    val parkingspace=ParkingSpace(auto)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -64,6 +65,11 @@ class MainActivity : AppCompatActivity() {
 
         check_in(list)
 
+        parkingspace.parking =parking
+        parkingspace.parking.workOfTheDay()
+        parkingspace.checkOutVehicle(auto.plate)
+        parkingspace.parking.workOfTheDay()
+        parkingspace.parking.listVehicle()
 
     }
 
